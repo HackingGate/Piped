@@ -114,6 +114,14 @@ const mixin = {
                 url = new URL(url);
                 for (var param in params) url.searchParams.set(param, params[param]);
             }
+            // Determine if the request is to the backend or the proxy
+            if (url.hostname === "Backend-Hostname-Placeholder" || url.hostname === "Proxy-Hostname-Placeholder") {
+                // If so, append headers if not present
+                if (!options) options = {};
+                if (!options.headers) options.headers = {};
+                options.headers["CF-Access-Client-Id"] = "CF-Access-Client-Id-Placeholder";
+                options.headers["CF-Access-Client-Secret"] = "CF-Access-Client-Secret-Placeholder";
+            }
             return fetch(url, options).then(response => {
                 return response.json();
             });
