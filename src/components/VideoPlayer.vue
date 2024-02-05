@@ -318,6 +318,15 @@ export default {
                     localPlayer.getNetworkingEngine().registerRequestFilter((_type, request) => {
                         const uri = request.uris[0];
                         var url = new URL(uri);
+                        // Determine if the request is to the backend or the proxy
+                        if (
+                            url.hostname === "Backend-Hostname-Placeholder" ||
+                            url.hostname === "Proxy-Hostname-Placeholder"
+                        ) {
+                            // If so, append headers
+                            request.headers["CF-Access-Client-Id"] = "CF-Access-Client-Id-Placeholder";
+                            request.headers["CF-Access-Client-Secret"] = "CF-Access-Client-Secret-Placeholder";
+                        }
                         const headers = request.headers;
                         if (
                             url.host.endsWith(".googlevideo.com") ||
